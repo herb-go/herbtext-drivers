@@ -12,7 +12,7 @@ import (
 var testtemplate = `{{test testkey}}-{{prefix 'testprefix' testkey2 }}`
 
 func TestEngine(t *testing.T) {
-	eng, err := texttemplate.NewEngine(EngineName, nil)
+	eng, err := texttemplate.GetEngine(EngineName)
 	if err != nil {
 		panic(err)
 	}
@@ -20,24 +20,19 @@ func TestEngine(t *testing.T) {
 	env.SetConverter("test", func(data string) string {
 		return data + "test"
 	})
-
-	err = eng.ApplyEnvironment(env)
-	if err != nil {
-		panic(err)
-	}
-	supported, err := eng.Supported()
+	env.SetFormatter("prefix", func(prefix string, data string) string {
+		return prefix + data
+	})
+	supported, err := eng.Supported(env)
 	if err != nil {
 		panic(err)
 	}
 	sort.Strings(supported)
-	if len(supported) != 1 || supported[0] != "test" {
+	if len(supported) != 2 || supported[0] != "prefix" || supported[1] != "test" {
 		t.Fatal(supported)
 	}
-	tplenv := herbtext.NewEnvironment()
-	tplenv.SetFormatter("prefix", func(prefix string, data string) string {
-		return prefix + data
-	})
-	v, err := eng.Parse(testtemplate, tplenv)
+
+	v, err := eng.Parse(testtemplate, env)
 	if err != nil {
 		panic(err)
 	}

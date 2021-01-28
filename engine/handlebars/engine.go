@@ -34,15 +34,7 @@ func supported(env herbtext.Environment) []string {
 }
 
 //Engine engine struct
-type Engine struct {
-	env herbtext.Environment
-}
-
-//ApplyEnvironment apply given environment to engine and return any error if raised.
-func (e *Engine) ApplyEnvironment(env herbtext.Environment) error {
-	e.env = herbtext.Clone(env)
-	return nil
-}
+type Engine struct{}
 
 //Parse parse given template with given environment to template view.
 func (e *Engine) Parse(template string, env herbtext.Environment) (texttemplate.View, error) {
@@ -50,24 +42,19 @@ func (e *Engine) Parse(template string, env herbtext.Environment) (texttemplate.
 	if err != nil {
 		return nil, err
 	}
-	tplenv := herbtext.Clone(e.env)
-	tplenv.MergeWith(env)
+	tplenv := herbtext.Clone(env)
 	applyEnvironment(tpl, tplenv)
 	return &View{template: tpl, supported: supported(tplenv)}, nil
 }
 
 //Supported return supported directives which can be used in template string.
-func (e *Engine) Supported() (directives []string, err error) {
-	return supported(e.env), nil
+func (e *Engine) Supported(env herbtext.Environment) (directives []string, err error) {
+	return supported(env), nil
 }
 
-//Factory engine factory function.
-func Factory(loader func(v interface{}) error) (texttemplate.Engine, error) {
-	return &Engine{
-		env: herbtext.DefaultEnvironment(),
-	}, nil
-}
+//DefaultEngine registered.
+var DefaultEngine = &Engine{}
 
 func init() {
-	texttemplate.Register(EngineName, Factory)
+	texttemplate.Register(EngineName, DefaultEngine)
 }
