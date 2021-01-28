@@ -10,6 +10,9 @@ import (
 	"github.com/herb-go/herbtext"
 )
 
+//DirectiveDefaultParser directive for parser default
+const DirectiveDefaultParser = ""
+
 //DirectiveParserString directive for parser string
 const DirectiveParserString = "string"
 
@@ -130,6 +133,7 @@ func ConverterJSONEscape(data string) string {
 
 //ApplyDirectives apply common directives to given plain enviroment.
 func ApplyDirectives(env *herbtext.PlainEnvironment) {
+	env.SetParser(DirectiveDefaultParser, ParserString)
 	env.SetParser(DirectiveParserString, ParserString)
 	env.SetParser(DirectiveParserJSON, ParserJSON)
 	env.SetConverter(DirectiveConverterToLower, ConverterToLower)

@@ -6,6 +6,21 @@ import (
 	"github.com/herb-go/herbtext"
 )
 
+func TestDefaultParser(t *testing.T) {
+	p := herbtext.DefaultEnvironment().GetParser(DirectiveDefaultParser)
+	if p == nil {
+		t.Fatal(p)
+	}
+	v, err := p("test")
+	if err != nil {
+		panic(err)
+	}
+	str, ok := v.(string)
+	if !ok || str != "test" {
+		t.Fatal(str, ok)
+	}
+}
+
 func TestParserString(t *testing.T) {
 	p := herbtext.DefaultEnvironment().GetParser(DirectiveParserString)
 	if p == nil {
