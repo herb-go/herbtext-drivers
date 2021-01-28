@@ -110,7 +110,7 @@ func ConverterCommaEscape(data string) string {
 }
 
 //ConverterCommaUnescape converter comma escape.
-//Escape ',' amd '&' in data as html.
+//Unescape ',' amd '&' in data as html.
 func ConverterCommaUnescape(data string) string {
 	return commaunescaper.Replace(data)
 }
