@@ -95,6 +95,10 @@ var commaescaper = strings.NewReplacer(
 	`,`, "&#44;",
 	`&`, "&amp;",
 )
+var commaunescaper = strings.NewReplacer(
+	"&#44;", `,`,
+	"&amp;", `&`,
+)
 
 //DirectiveConverterCommaEscape directive for converter comma escape.
 const DirectiveConverterCommaEscape = "commaescape"
@@ -103,6 +107,12 @@ const DirectiveConverterCommaEscape = "commaescape"
 //Escape ',' amd '&' in data as html.
 func ConverterCommaEscape(data string) string {
 	return commaescaper.Replace(data)
+}
+
+//ConverterCommaUnescape converter comma escape.
+//Escape ',' amd '&' in data as html.
+func ConverterCommaUnescape(data string) string {
+	return commaunescaper.Replace(data)
 }
 
 //DirectiveConverterJSONEscape directive for converter json escape
