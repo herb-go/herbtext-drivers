@@ -55,6 +55,11 @@ func (e *Engine) Supported(env herbtext.Environment) (directives []string, err e
 //DefaultEngine registered.
 var DefaultEngine = &Engine{}
 
-func init() {
+//Register register engine
+func Register() {
 	texttemplate.Register(EngineName, DefaultEngine)
+
+}
+func init() {
+	Register()
 }
