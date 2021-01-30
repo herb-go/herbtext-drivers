@@ -37,7 +37,7 @@ func supported(env herbtext.Environment) []string {
 type Engine struct{}
 
 //Parse parse given template with given environment to template view.
-func (e *Engine) Parse(template string, env herbtext.Environment) (texttemplate.View, error) {
+func (e *Engine) Parse(template string, env herbtext.Environment) (texttemplate.Template, error) {
 	tpl, err := raymond.Parse(template)
 	if err != nil {
 		return nil, err
